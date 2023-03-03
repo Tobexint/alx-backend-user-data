@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-User data management module
+this module contains user data management
 """
 from typing import List
 import logging
@@ -12,7 +12,8 @@ import re
 PII_FIELDS = ('name', 'password', 'phone', 'ssn', 'email')
 
 
-def filter_datum(fields: List[str], redction: str, message: str, seperator:str) -> str:
+def filter_datum(fields: List[str], redaction: str, message: str,
+                 separator: str) -> str:
     """
     this function returns the log message obfuscated - the function uses
     a regex to replace occurences of certain field values
@@ -26,8 +27,8 @@ def filter_datum(fields: List[str], redction: str, message: str, seperator:str) 
         the log message obfuscated
     """
     for field in fields:
-        replace = "{}={}{}".format(field, redaction, seperator)
-        message = re.sub("{}=.*?{}".format(field, seperator), replace, message)
+        replace = "{}={}{}".format(field, redaction, separator)
+        message = re.sub("{}=.*?{}".format(field, separator), replace, message)
     return message
 
 
@@ -39,21 +40,21 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fileds: List[str]):
-        """ init method"""
+    def __init__(self, fields: List[str]):
+        """initialization method"""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
         """this function filters values in incoming log records using
          filter_datum function"""
-         return filter_datum(self.fields, self.REDACTION,
+        return filter_datum(self.fields, self.REDACTION,
                             super(RedactingFormatter, self).format(record),
                             self.SEPARATOR)
 
 
 def get_logger() -> logging.Logger:
-    """ returns a logging.Logger object """
+    """this method returns a user data logger"""
     log = logging.getLogger('user_data')
     log.setLevel(logging.INFO)
     log.propagate = False
