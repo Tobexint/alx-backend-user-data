@@ -4,6 +4,7 @@
 
 from flask import request
 from typing import List, Pattern, TypeVar
+import os
 
 
 class Auth:
