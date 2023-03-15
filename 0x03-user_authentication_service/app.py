@@ -33,4 +33,3 @@ def users() -> str:
         return jsonify({
             "message": "email already registered"
         }), 400
-
